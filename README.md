@@ -8,3 +8,5 @@ The basic rules of the game is as follows:
 - If the player guesses a letter **not present** in the word, a stroke is drawn.
 - If the player guesses a correct letter, it is filled in the blank at it's position.
 - The player wins if they are able to guess all letters of the word _before_ the hangman is drawn completely.
+
+## Simply run the python script and you should be able to play it in the terminal.##
