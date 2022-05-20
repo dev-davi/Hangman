@@ -201,6 +201,8 @@ def play_loop():
         sys.exit()
 
 
+# just a test.
+
 if __name__ == "__main__":
     # Initial steps to invite in the game:
     print('Welcome to hangman.')
