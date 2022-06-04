@@ -21,11 +21,11 @@ def main() -> None:
     global play_game
     global limit
     global previous_index_of_letter
+    global letter_to_index
     # choose a random word from WORDS and decodes it from a type bytes to str.
     word = random.choice(WORDS).decode('UTF-8')
     length = len(word)
     count = 0
-    previous_index_of_letter = 0
     display = '_' * length
     already_guessed = []
     play_game = ""
@@ -49,15 +49,12 @@ def check_valid_input():
 def update_display(guess: str) -> None:
     global display
     global word
-    global previous_index_of_letter
-    if guess == word[previous_index_of_letter]:
-        new_index_of_letter = word.find(guess, previous_index_of_letter + 1)
-        display = display[: new_index_of_letter] + guess + display[new_index_of_letter + 1 :]
-        previous_index_of_letter = new_index_of_letter
-    else:
-        index = word.find(guess)
-        display = display[: index] + guess + display[index + 1 :]
-        previous_index_of_letter = index
+    
+    for i in range(len(word)):
+        if word[i] == guess and display[i] == '_':
+            display = display[:i] + guess + display[i+1:]
+            break
+
 
 def update_alreay_guessed(guess: str) -> None:
     global already_guessed
@@ -200,8 +197,6 @@ def play_loop():
         print("Thanks For Playing! Come again!")
         sys.exit()
 
-
-# just a test.
 
 if __name__ == "__main__":
     # Initial steps to invite in the game:
