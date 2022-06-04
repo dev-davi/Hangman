@@ -20,8 +20,6 @@ def main() -> None:
     global length
     global play_game
     global limit
-    global previous_index_of_letter
-    global letter_to_index
     # choose a random word from WORDS and decodes it from a type bytes to str.
     word = random.choice(WORDS).decode('UTF-8')
     length = len(word)
@@ -43,7 +41,6 @@ def check_valid_input():
         check_valid_input()
     else:
         hangman(guess)
-
 
 # Update display to account for the correctly guessed letter. 
 def update_display(guess: str) -> None:
