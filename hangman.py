@@ -47,15 +47,16 @@ def check_valid_input():
 def update_display(guess: str) -> None:
     global display
     global word
+    display_alias = display
     # iterate over word and find the relevent index of the guessed letter, 
     # then replace "_" with the letter at that index
     for i in range(len(word)):
         if word[i] == guess and display[i] == '_':
             display = display[:i] + guess + display[i+1:]
             break
-    # if it dosent break, then all available positions of the gussed letter 
+    # if it desn't break before the last position of word, then all available positions of the gussed letter 
     # are filled, then it counts as a wrong guess.
-    if i == len(word) - 1:
+    if display_alias == display:
         wrong_guess()
 
 def update_alreay_guessed(guess: str) -> None:
