@@ -1,4 +1,5 @@
 from ntpath import join
+from re import S
 import sys
 import random
 import time
@@ -46,18 +47,22 @@ def check_valid_input():
 def update_display(guess: str) -> None:
     global display
     global word
-    
+    # iterate over word and find the relevent index of the guessed letter, 
+    # then replace "_" with the letter at that index
     for i in range(len(word)):
         if word[i] == guess and display[i] == '_':
             display = display[:i] + guess + display[i+1:]
             break
-
+    # if it dosent break, then all available positions of the gussed letter 
+    # are filled, then it counts as a wrong guess.
+    if i == len(word) - 1:
+        wrong_guess()
 
 def update_alreay_guessed(guess: str) -> None:
     global already_guessed
     if guess not in already_guessed:
         already_guessed.append(guess)
-    
+
 def hangman(guess):
     global count
     global display
@@ -70,115 +75,121 @@ def hangman(guess):
         update_display(guess)
         print(display)
     else:
-        count += 1
-        if count == 1:
-            time.sleep(1)
-            print("   _____ \n"
-                "  |      \n"
-                "  |      \n"
-                "  |      \n"
-                "  |      \n"
-                "  |      \n"
-                "  |      \n"
-                "__|__\n")
-            print("Wrong guess. " + str(limit - count) + " guesses remaining")
-        elif count == 2:
-            time.sleep(1)
-            print("   _____ \n"
-                "  |     | \n"
-                "  |     |\n"
-                "  |      \n"
-                "  |      \n"
-                "  |      \n"
-                "  |      \n"
-                "__|__\n")
-            print("Wrong guess. " + str(limit - count) + " guesses remaining")
-        elif count == 3:
-            time.sleep(1)
-            print("   _____ \n"
-                "  |     | \n"
-                "  |     |\n"
-                "  |     | \n"
-                "  |      \n"
-                "  |      \n"
-                "  |      \n"
-                "__|__\n")
-            print("Wrong guess. " + str(limit - count) + " guesses remaining")
-        elif count == 4:
-            time.sleep(1)
-            print("   _____ \n"
-                "  |     | \n"
-                "  |     |\n"
-                "  |     | \n"
-                "  |     O \n"
-                "  |      \n"
-                "  |      \n"
-                "__|__\n")
-            print("Wrong guess. " + str(limit - count) + " guesses remaining")
-        elif count == 5:
-            time.sleep(1)
-            print("   _____ \n"
-                "  |     | \n"
-                "  |     |\n"
-                "  |     | \n"
-                "  |     O \n"
-                "  |     | \n"
-                "  |      \n"
-                "__|__\n")
-            print("Wrong guess. " + str(limit - count) + " guesses remaining")
-        elif count == 6:
-            time.sleep(1)
-            print("   _____ \n"
-                "  |     | \n"
-                "  |     |\n"
-                "  |     | \n"
-                "  |     O \n"
-                "  |    /| \n"
-                "  |     \n"
-                "__|__\n")
-            print("Wrong guess. " + str(limit - count) + " guesses remaining")
-        elif count == 7:
-            time.sleep(1)
-            print("   _____ \n"
-                "  |     | \n"
-                "  |     |\n"
-                "  |     | \n"
-                "  |     O \n"
-                "  |    /|\  \n"
-                "  |      \n"
-                "__|__\n")
-            print("Wrong guess. " + str(limit - count) + " guesses remaining")
-        elif count == 8:
-            time.sleep(1)
-            print("   _____ \n"
-                "  |     | \n"
-                "  |     |\n"
-                "  |     | \n"
-                "  |     O \n"
-                "  |    /|\  \n"
-                "  |    /  \n"
-                "__|__\n")
-            print("Wrong guess. " + str(limit - count) + " last guess remaining")
-        elif count == 9:
-            time.sleep(1)
-            print("   _____ \n"
-                "  |     | \n"
-                "  |     |\n"
-                "  |     | \n"
-                "  |     O \n"
-                "  |    /|\ \n"
-                "  |    / \ \n"
-                "__|__\n")
-            print("Wrong guess. You are hanged!!!")
-            print("The word was:", word)
-            print("your correct guesses:", already_guessed)
-            play_loop()
+        wrong_guess()
     if display == word:
         print("Congrats! You have guessed the word correctly!")
         play_loop()
     elif count != limit:
         check_valid_input()
 
+
+def wrong_guess():
+    global count
+    global word
+    global already_guessed
+    count += 1
+    if count == 1:
+        time.sleep(1)
+        print("   _____ \n"
+            "  |      \n"
+            "  |      \n"
+            "  |      \n"
+            "  |      \n"
+            "  |      \n"
+            "  |      \n"
+            "__|__\n")
+        print("Wrong guess. " + str(limit - count) + " guesses remaining")
+    elif count == 2:
+        time.sleep(1)
+        print("   _____ \n"
+            "  |     | \n"
+            "  |     |\n"
+            "  |      \n"
+            "  |      \n"
+            "  |      \n"
+            "  |      \n"
+            "__|__\n")
+        print("Wrong guess. " + str(limit - count) + " guesses remaining")
+    elif count == 3:
+        time.sleep(1)
+        print("   _____ \n"
+            "  |     | \n"
+            "  |     |\n"
+            "  |     | \n"
+            "  |      \n"
+            "  |      \n"
+            "  |      \n"
+            "__|__\n")
+        print("Wrong guess. " + str(limit - count) + " guesses remaining")
+    elif count == 4:
+        time.sleep(1)
+        print("   _____ \n"
+            "  |     | \n"
+            "  |     |\n"
+            "  |     | \n"
+            "  |     O \n"
+            "  |      \n"
+            "  |      \n"
+            "__|__\n")
+        print("Wrong guess. " + str(limit - count) + " guesses remaining")
+    elif count == 5:
+        time.sleep(1)
+        print("   _____ \n"
+            "  |     | \n"
+            "  |     |\n"
+            "  |     | \n"
+            "  |     O \n"
+            "  |     | \n"
+            "  |      \n"
+            "__|__\n")
+        print("Wrong guess. " + str(limit - count) + " guesses remaining")
+    elif count == 6:
+        time.sleep(1)
+        print("   _____ \n"
+            "  |     | \n"
+            "  |     |\n"
+            "  |     | \n"
+            "  |     O \n"
+            "  |    /| \n"
+            "  |     \n"
+            "__|__\n")
+        print("Wrong guess. " + str(limit - count) + " guesses remaining")
+    elif count == 7:
+        time.sleep(1)
+        print("   _____ \n"
+            "  |     | \n"
+            "  |     |\n"
+            "  |     | \n"
+            "  |     O \n"
+            "  |    /|\  \n"
+            "  |      \n"
+            "__|__\n")
+        print("Wrong guess. " + str(limit - count) + " guesses remaining")
+    elif count == 8:
+        time.sleep(1)
+        print("   _____ \n"
+            "  |     | \n"
+            "  |     |\n"
+            "  |     | \n"
+            "  |     O \n"
+            "  |    /|\  \n"
+            "  |    /  \n"
+            "__|__\n")
+        print("Wrong guess. " + str(limit - count) + " last guess remaining")
+    elif count == 9:
+        time.sleep(1)
+        print("   _____ \n"
+            "  |     | \n"
+            "  |     |\n"
+            "  |     | \n"
+            "  |     O \n"
+            "  |    /|\ \n"
+            "  |    / \ \n"
+            "__|__\n")
+        print("Wrong guess. You are hanged!!!")
+        print("The word was:", word)
+        print("your correct guesses:", already_guessed)
+        play_loop()
 
 def play_loop():
     play_game = input("Would you like to play again? y = yes, n = no \n")
